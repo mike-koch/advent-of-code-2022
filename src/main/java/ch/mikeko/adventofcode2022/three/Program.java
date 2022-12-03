@@ -2,61 +2,73 @@ package ch.mikeko.adventofcode2022.three;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Program {
     public static void main(String[] args) {
-        var prioritySum = 0;
+        var partOnePrioritySum = 0;
+        var partTwoPrioritySum = 0;
 
         try (Stream<String> lines = InputParser.getInputByLine(3)) {
             var allLines = lines.collect(Collectors.toList());
 
+            var partTwoCounter = 1;
+            List<String> partTwoSublists = new ArrayList<>();
             for (var line : allLines) {
+                //region Part 1 - common item in each list
                 var lineHalfLength = line.length() / 2;
                 var firstHalf = line.substring(0, lineHalfLength);
                 var secondHalf = line.substring(lineHalfLength);
 
                 var commonCharacter = getCommonCharacter(firstHalf, secondHalf);
-                if (commonCharacter < 97) {
-                    // Uppercase
-                    prioritySum += getUppercasePriority(commonCharacter);
-                } else {
-                    // Lowercase
-                    prioritySum += getLowercasePriority(commonCharacter);
+                partOnePrioritySum += getPriority(commonCharacter);
+                //endregion
+                //region Part 2 - common char in each group of 3
+                partTwoSublists.add(line);
+                if (partTwoCounter++ % 3 == 0) {
+                    commonCharacter = getCommonCharacter(partTwoSublists.toArray(new String[] {}));
+                    partTwoPrioritySum += getPriority(commonCharacter);
+                    partTwoSublists.clear();
                 }
+                //endregion
             }
 
-            System.out.printf("Part one result: %s%n", prioritySum);
+            System.out.printf("Part one result: %s%n", partOnePrioritySum);
+            System.out.printf("Part two result: %s%n", partTwoPrioritySum);
         }
     }
 
-    private static Character getCommonCharacter(String firstHalf, String secondHalf) {
-        var firstSet = new TreeSet<Character>();
-        for (char character : firstHalf.toCharArray()) {
-            firstSet.add(character);
+    private static Character getCommonCharacter(String... strings) {
+        List<TreeSet<Character>> sets = new ArrayList<>();
+        for (String aString : strings) {
+            var set = new TreeSet<Character>();
+            for (char character : aString.toCharArray()) {
+                set.add(character);
+            }
+
+            sets.add(set);
         }
 
-        var secondSet = new TreeSet<Character>();
-        for (char character : secondHalf.toCharArray()) {
-            secondSet.add(character);
+        for (int i = 1; i < sets.size(); i++) {
+            sets.get(0).retainAll(sets.get(i));
         }
 
-        firstSet.retainAll(secondSet);
-
-        return firstSet.stream()
+        return sets.get(0).stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException(String.format("Couldn't find a matching string between '%s' and '%s'", firstHalf, secondHalf)));
+                .orElseThrow(() -> new RuntimeException("Couldn't find a matching string"));
     }
 
-    private static int getLowercasePriority(char value) {
+    private static int getPriority(char value) {
+        if (value < 97) {
+            // 'A' = 65 -> 27
+            return ((int) value) - 38;
+        }
+
         // 'a' = 97 -> 1
         return ((int) value) - 96;
-    }
-
-    private static int getUppercasePriority(char value) {
-        // 'A' = 65 -> 27
-        return ((int) value) - 38;
     }
 }
