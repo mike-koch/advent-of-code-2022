@@ -36,6 +36,9 @@ public class Program {
 
         list.sort((o1, o2) -> o2 - o1);
 
-        System.out.println(list.get(0));
+        System.out.printf("Part one solution: %s%n", list.get(0));
+
+        var topThreeTotal = list.get(0) + list.get(1) + list.get(2);
+        System.out.printf("Part two solution: %s%n", topThreeTotal);
     }
 }
