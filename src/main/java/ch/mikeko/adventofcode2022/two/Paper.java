@@ -9,11 +9,12 @@ public class Paper extends Shape {
     }
 
     @Override
-    Map<Class<? extends Shape>, Integer> getScores() {
-        return Map.of(
-                Rock.class, 6,
-                Paper.class, 3,
-                Scissors.class, 0
-        );
+    Class<? extends Shape> getWinningShapeType() {
+        return Rock.class;
+    }
+
+    @Override
+    Class<? extends Shape> getLosingShapeType() {
+        return Scissors.class;
     }
 }

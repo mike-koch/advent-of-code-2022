@@ -1,7 +1,5 @@
 package ch.mikeko.adventofcode2022.two;
 
-import java.util.Map;
-
 public class Rock extends Shape {
     @Override
     int getShapeScore() {
@@ -9,11 +7,12 @@ public class Rock extends Shape {
     }
 
     @Override
-    Map<Class<? extends Shape>, Integer> getScores() {
-        return Map.of(
-                Rock.class, 3,
-                Paper.class, 0,
-                Scissors.class, 6
-        );
+    Class<? extends Shape> getWinningShapeType() {
+        return Scissors.class;
+    }
+
+    @Override
+    Class<? extends Shape> getLosingShapeType() {
+        return Paper.class;
     }
 }
