@@ -1,5 +1,7 @@
 package ch.mikeko.adventofcode2022.one;
 
+import ch.mikeko.adventofcode2022.common.InputParser;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,11 +17,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Program {
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) {
         var list = new ArrayList<Integer>();
 
-        URL resource = Program.class.getResource("/ch/mikeko/adventofcode2022/one/input.txt");
-        try (Stream<String> lines = Files.lines(Path.of(Objects.requireNonNull(resource).toURI()), Charset.defaultCharset())) {
+        try (Stream<String> lines = InputParser.getInputByLine(1)) {
             var collectedLines = lines.collect(Collectors.toList());
 
             var runningTotal = 0;
