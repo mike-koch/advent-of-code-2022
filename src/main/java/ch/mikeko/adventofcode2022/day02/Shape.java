@@ -1,6 +1,4 @@
-package ch.mikeko.adventofcode2022.two;
-
-import java.util.Map;
+package ch.mikeko.adventofcode2022.day02;
 
 public abstract class Shape {
     abstract int getShapeScore();

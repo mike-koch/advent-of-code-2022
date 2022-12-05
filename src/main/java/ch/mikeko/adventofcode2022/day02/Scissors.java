@@ -1,18 +1,18 @@
-package ch.mikeko.adventofcode2022.two;
+package ch.mikeko.adventofcode2022.day02;
 
-public class Rock extends Shape {
+public class Scissors extends Shape {
     @Override
     int getShapeScore() {
-        return 1;
+        return 3;
     }
 
     @Override
     Class<? extends Shape> getWinningShapeType() {
-        return Scissors.class;
+        return Paper.class;
     }
 
     @Override
     Class<? extends Shape> getLosingShapeType() {
-        return Paper.class;
+        return Rock.class;
     }
 }

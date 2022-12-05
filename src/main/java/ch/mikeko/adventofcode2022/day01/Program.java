@@ -1,18 +1,8 @@
-package ch.mikeko.adventofcode2022.one;
+package ch.mikeko.adventofcode2022.day01;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

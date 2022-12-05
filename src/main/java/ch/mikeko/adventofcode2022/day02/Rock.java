@@ -1,20 +1,18 @@
-package ch.mikeko.adventofcode2022.two;
+package ch.mikeko.adventofcode2022.day02;
 
-import java.util.Map;
-
-public class Paper extends Shape {
+public class Rock extends Shape {
     @Override
     int getShapeScore() {
-        return 2;
+        return 1;
     }
 
     @Override
     Class<? extends Shape> getWinningShapeType() {
-        return Rock.class;
+        return Scissors.class;
     }
 
     @Override
     Class<? extends Shape> getLosingShapeType() {
-        return Scissors.class;
+        return Paper.class;
     }
 }

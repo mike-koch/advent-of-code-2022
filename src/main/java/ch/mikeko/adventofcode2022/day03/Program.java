@@ -1,4 +1,4 @@
-package ch.mikeko.adventofcode2022.three;
+package ch.mikeko.adventofcode2022.day03;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
 
