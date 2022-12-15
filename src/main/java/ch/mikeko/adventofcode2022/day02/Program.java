@@ -1,6 +1,7 @@
 package ch.mikeko.adventofcode2022.day02;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
+import ch.mikeko.adventofcode2022.common.InputType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ public class Program {
         int partOneTotalScore = 0;
         int partTwoTotalScore = 0;
 
-        try (Stream<String> lines = InputParser.getInputByLine(2)) {
+        try (Stream<String> lines = InputParser.getInputByLine(2, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
             // Sample line: B Z
             for (var line : allLines) {

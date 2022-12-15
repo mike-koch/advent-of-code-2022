@@ -1,6 +1,7 @@
 package ch.mikeko.adventofcode2022.day03;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
+import ch.mikeko.adventofcode2022.common.InputType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Program {
         var partOnePrioritySum = 0;
         var partTwoPrioritySum = 0;
 
-        try (Stream<String> lines = InputParser.getInputByLine(3)) {
+        try (Stream<String> lines = InputParser.getInputByLine(3, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
 
             var partTwoCounter = 1;

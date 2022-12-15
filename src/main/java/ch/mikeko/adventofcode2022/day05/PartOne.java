@@ -1,6 +1,7 @@
 package ch.mikeko.adventofcode2022.day05;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
+import ch.mikeko.adventofcode2022.common.InputType;
 
 import java.util.Map;
 import java.util.Stack;
@@ -22,7 +23,7 @@ public class PartOne {
     public static void main(String[] args) {
         populateStacks();
 
-        try (Stream<String> lines = InputParser.getInputByLine(5)) {
+        try (Stream<String> lines = InputParser.getInputByLine(5, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
 
             for (var line : allLines) {

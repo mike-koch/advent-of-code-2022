@@ -1,6 +1,7 @@
 package ch.mikeko.adventofcode2022.day04;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
+import ch.mikeko.adventofcode2022.common.InputType;
 
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class Program {
         EQ       | EQ     | true
          */
 
-        try (Stream<String> lines = InputParser.getInputByLine(4)) {
+        try (Stream<String> lines = InputParser.getInputByLine(4, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
 
             for (var line : allLines) {

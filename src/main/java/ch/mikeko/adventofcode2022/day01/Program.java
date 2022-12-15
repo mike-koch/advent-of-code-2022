@@ -1,6 +1,7 @@
 package ch.mikeko.adventofcode2022.day01;
 
 import ch.mikeko.adventofcode2022.common.InputParser;
+import ch.mikeko.adventofcode2022.common.InputType;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ public class Program {
     public static void main(String[] args) {
         var list = new ArrayList<Integer>();
 
-        try (Stream<String> lines = InputParser.getInputByLine(1)) {
+        try (Stream<String> lines = InputParser.getInputByLine(1, InputType.PUZZLE_INPUT)) {
             var collectedLines = lines.collect(Collectors.toList());
 
             var runningTotal = 0;
