@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Program {
+    private static final int TOTAL_DISK_SPACE = 70_000_000;
+    private static final int UPDATE_SPACE_REQUIRED = 30_000_000;
+
     public static void main(String[] args) {
         try (Stream<String> lines = InputParser.getInputByLine(7, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
@@ -15,9 +18,24 @@ public class Program {
 
             buildDirectoryTree(allLines, rootDirectory);
 
-            var sumOfQualifiedDirectories = walkDirectoryTree(rootDirectory);
-
+            // Part 1
+            var sumOfQualifiedDirectories = getSumOfQualifiedDirectories(rootDirectory);
             System.out.printf("Part one result: %s%n", sumOfQualifiedDirectories);
+
+            // Part 2
+            var totalDiskSpaceUsed = rootDirectory.getSize();
+            var availableDiskSpace = TOTAL_DISK_SPACE - totalDiskSpaceUsed;
+            var spaceNeededToFreeUp = UPDATE_SPACE_REQUIRED - availableDiskSpace;
+            System.out.println("----------");
+            System.out.printf("Available space: %s%n", availableDiskSpace);
+            System.out.printf("Space needed to free up: %s%n", spaceNeededToFreeUp);
+
+            var smallestDirectoryToFreeUpEnoughSpace = getSmallestDirectoryToFreeUpEnoughSpace(rootDirectory,
+                    spaceNeededToFreeUp,
+                    rootDirectory);
+            System.out.printf("Smallest qualified directory: %s (size: %s)%n",
+                    smallestDirectoryToFreeUpEnoughSpace.getName(),
+                    smallestDirectoryToFreeUpEnoughSpace.getSize());
         }
     }
 
@@ -62,7 +80,7 @@ public class Program {
         }
     }
 
-    private static int walkDirectoryTree(Directory currentDirectory) {
+    private static int getSumOfQualifiedDirectories(Directory currentDirectory) {
         var sumOfQualifiedDirectories = 0;
 
         if (currentDirectory.getSize() <= 100_000) {
@@ -70,9 +88,25 @@ public class Program {
         }
 
         for (Directory subdirectory : currentDirectory.getSubdirectories()) {
-            sumOfQualifiedDirectories += walkDirectoryTree(subdirectory);
+            sumOfQualifiedDirectories += getSumOfQualifiedDirectories(subdirectory);
         }
 
         return sumOfQualifiedDirectories;
+    }
+
+    private static Directory getSmallestDirectoryToFreeUpEnoughSpace(Directory currentDirectory,
+                                                                     int spaceNeededToFreeUp,
+                                                                     Directory currentSmallestDirectory) {
+        if (currentDirectory.getSize() >= spaceNeededToFreeUp && currentDirectory.getSize() < currentSmallestDirectory.getSize()) {
+            currentSmallestDirectory = currentDirectory;
+        }
+
+        for (Directory subdirectory : currentDirectory.getSubdirectories()) {
+            currentSmallestDirectory = getSmallestDirectoryToFreeUpEnoughSpace(subdirectory,
+                    spaceNeededToFreeUp,
+                    currentSmallestDirectory);
+        }
+
+        return currentSmallestDirectory;
     }
 }
