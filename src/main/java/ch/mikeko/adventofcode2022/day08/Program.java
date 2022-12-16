@@ -14,12 +14,12 @@ public class Program {
             var allLines = lines.collect(Collectors.toList());
             var treeMapping = initializeTreeMapping(allLines);
 
-            var visibleTrees = getVisibleTrees(treeMapping);
-
-            System.out.printf("Part one answer: %s%n", visibleTrees);
+            System.out.printf("Part one answer: %s%n", getVisibleTrees(treeMapping));
+            System.out.printf("Part two answer: %s%n", getBestScenicScore(treeMapping));
         }
     }
 
+    //region Part One
     private static int[][] initializeTreeMapping(List<String> allLines) {
         var treeMapping = new int[allLines.size()][allLines.size()];
         for (var i = 0; i < allLines.size(); i++) {
@@ -93,4 +93,38 @@ public class Program {
 
         return Arrays.asList(tallestTopTree, tallestBottomTree);
     }
+    //endregion
+
+    //region Part Two
+    private static int getBestScenicScore(int[][] treeMapping) {
+        var bestScenicScore = 0;
+        for (var row = 0; row < treeMapping.length; row++) {
+            for (var column = 0; column < treeMapping.length; column++) {
+                bestScenicScore = Math.max(bestScenicScore, getScenicScoreForTree(treeMapping, row, column));
+            }
+        }
+        return bestScenicScore;
+    }
+
+    private static int getScenicScoreForTree(int[][] treeMapping, int currentRow, int currentColumn) {
+        var topScore = getScenicScoreForDirection(treeMapping, currentRow, currentColumn, Direction.UP);
+        var bottomScore = getScenicScoreForDirection(treeMapping, currentRow, currentColumn, Direction.DOWN);
+        var leftScore = getScenicScoreForDirection(treeMapping, currentRow, currentColumn, Direction.LEFT);
+        var rightScore = getScenicScoreForDirection(treeMapping, currentRow, currentColumn, Direction.RIGHT);
+
+        return topScore * bottomScore * leftScore * rightScore;
+    }
+
+    private static int getScenicScoreForDirection(int[][] treeMapping, int currentRow, int currentColumn, Direction direction) {
+
+        if ((direction == Direction.UP && currentRow == 0) ||
+                (direction == Direction.DOWN && currentRow == treeMapping.length - 1) ||
+                (direction == Direction.LEFT && currentColumn == 0) ||
+                (direction == Direction.RIGHT && currentColumn == treeMapping[currentRow].length - 1)) {
+            return 0;
+        }
+
+        return direction.accept(treeMapping, currentRow, currentColumn);
+    }
+    //endregion
 }
