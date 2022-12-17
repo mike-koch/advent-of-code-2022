@@ -3,7 +3,9 @@ package ch.mikeko.adventofcode2022.day12;
 import ch.mikeko.adventofcode2022.common.InputParser;
 import ch.mikeko.adventofcode2022.common.InputType;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,14 +13,29 @@ public class Program {
     private static Node start;
     private static Node end;
 
+    private static final List<Node> PART_TWO_POTENTIAL_STARTS = new ArrayList<>();
+
     public static void main(String[] args) {
+        var bfs = new BreadthFirstSearch();
+
         try (Stream<String> lines = InputParser.getInputByLine(12, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
             Node[][] graph = initNodes(allLines);
             populateValidNeighbors(graph);
-            var visitCount = new BreadthFirstSearch().traverse(start);
 
+            //region Part One
+            var visitCount = bfs.traverse(start);
             System.out.printf("Part one answer: %s%n", visitCount.get(end));
+            //endregion
+
+            //region Part Two
+            var partTwoVisitCount = Integer.MAX_VALUE;
+            for (var node : PART_TWO_POTENTIAL_STARTS) {
+                Map<Node, Integer> traversalResult = bfs.traverse(node);
+                partTwoVisitCount = Math.min(partTwoVisitCount, traversalResult.getOrDefault(end, Integer.MAX_VALUE));
+            }
+            System.out.printf("Part two answer: %s%n", partTwoVisitCount);
+            //endregion
         }
     }
 
@@ -42,6 +59,10 @@ public class Program {
                     start = node;
                 } else if (letter == 'E') {
                     end = node;
+                }
+
+                if (node.getWeight() == 1) {
+                    PART_TWO_POTENTIAL_STARTS.add(node);
                 }
             }
         }

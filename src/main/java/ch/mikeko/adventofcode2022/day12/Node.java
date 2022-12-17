@@ -7,7 +7,6 @@ public class Node {
     private final char letter;
     private int weight;
     private List<Node> validNeighbors = new ArrayList<>();
-    private boolean visited;
 
     public Node(char letter) {
         this.letter = letter;
@@ -27,14 +26,6 @@ public class Node {
 
     public void setValidNeighbors(List<Node> validNeighbors) {
         this.validNeighbors = validNeighbors;
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
     }
 
     @Override
