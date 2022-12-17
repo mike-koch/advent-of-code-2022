@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Program {
+public class PartOne {
     public static void main(String[] args) {
         try (Stream<String> lines = InputParser.getInputByLine(14, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
