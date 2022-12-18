@@ -23,10 +23,10 @@ public class Program {
                         .replaceAll(": closest beacon is at x=", ",");
                 var splitLine = line.split(",");
                 sensors.add(new Sensor(
-                        Integer.parseInt(splitLine[0]),
-                        Integer.parseInt(splitLine[1]),
-                        Integer.parseInt(splitLine[2]),
-                        Integer.parseInt(splitLine[3]))
+                        Long.parseLong(splitLine[0]),
+                        Long.parseLong(splitLine[1]),
+                        Long.parseLong(splitLine[2]),
+                        Long.parseLong(splitLine[3]))
                 );
             }
 
@@ -35,6 +35,22 @@ public class Program {
             removePossibilitiesThatActuallyHaveABeacon(allNonBeaconPositions, sensors);
 
             System.out.printf("Part one result: %s%n", allNonBeaconPositions.size());
+
+            // Part 2 - check if outer perimeter of one sensor is non-existent in another
+            // It's slow, but it works :)
+            var done = false;
+            for (Sensor sensor : sensors) {
+                if (done) {
+                    break;
+                }
+
+                for (Coordinate coordinate : sensor.getCoordinatesJustOutsideManhattanSquare()) {
+                    if (sensors.stream().filter(x -> x != sensor).noneMatch(x -> x.isCoordinateInManhattanSquare(coordinate))) {
+                        System.out.printf("Part two result: %s%n", (coordinate.getX() * 4_000_000) + coordinate.getY());
+                        done = true;
+                    }
+                }
+            }
         }
     }
 

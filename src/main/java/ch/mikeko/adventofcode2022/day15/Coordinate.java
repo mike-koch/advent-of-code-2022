@@ -3,19 +3,19 @@ package ch.mikeko.adventofcode2022.day15;
 import java.util.Objects;
 
 public class Coordinate {
-    private final int x;
-    private final int y;
+    private final long x;
+    private final long y;
 
-    public Coordinate(int x, int y) {
+    public Coordinate(long x, long y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public long getX() {
         return x;
     }
 
-    public int getY() {
+    public long getY() {
         return y;
     }
 
