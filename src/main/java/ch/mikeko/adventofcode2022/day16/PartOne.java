@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Program {
+public class PartOne {
     public static void main(String[] args) {
         try (Stream<String> lines = InputParser.getInputByLine(16, InputType.PUZZLE_INPUT)) {
             var allLines = lines.collect(Collectors.toList());
@@ -15,7 +15,8 @@ public class Program {
             var floydWarshallMatrix = new FloydWarshall(buildFloydWarshallMatrix(valves)).doFloydWarshall();
             var bestFlowRate = processMatrix("AA", valves, new ArrayList<>(), floydWarshallMatrix, 30);
 
-            System.out.println(bestFlowRate);
+
+            System.out.printf("Part one result: %s%n", bestFlowRate);
         }
     }
 

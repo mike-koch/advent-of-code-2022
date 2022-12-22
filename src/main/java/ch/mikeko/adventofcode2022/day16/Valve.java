@@ -2,12 +2,13 @@ package ch.mikeko.adventofcode2022.day16;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Valve {
     private final String name;
     private final int matrixIndex;
     private int flowRate = -1;
-    private List<String> neighbors = new ArrayList<>();
+    private final List<String> neighbors = new ArrayList<>();
 
 
     public Valve(String name, int matrixIndex) {
@@ -37,5 +38,18 @@ public class Valve {
 
     public List<String> getNeighbors() {
         return neighbors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Valve valve = (Valve) o;
+        return Objects.equals(name, valve.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
