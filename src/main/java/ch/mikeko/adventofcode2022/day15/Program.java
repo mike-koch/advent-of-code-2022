@@ -1,5 +1,6 @@
 package ch.mikeko.adventofcode2022.day15;
 
+import ch.mikeko.adventofcode2022.common.Coordinate;
 import ch.mikeko.adventofcode2022.common.InputParser;
 import ch.mikeko.adventofcode2022.common.InputType;
 

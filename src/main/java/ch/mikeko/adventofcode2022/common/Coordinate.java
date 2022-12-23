@@ -1,13 +1,21 @@
-package ch.mikeko.adventofcode2022.day15;
+package ch.mikeko.adventofcode2022.common;
 
 import java.util.Objects;
 
 public class Coordinate {
-    private final long x;
-    private final long y;
+    private long x;
+    private long y;
 
     public Coordinate(long x, long y) {
         this.x = x;
+        this.y = y;
+    }
+
+    public void setX(long x) {
+        this.x = x;
+    }
+
+    public void setY(long y) {
         this.y = y;
     }
 

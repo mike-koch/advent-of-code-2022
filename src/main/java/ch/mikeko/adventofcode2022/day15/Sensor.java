@@ -1,8 +1,9 @@
 package ch.mikeko.adventofcode2022.day15;
 
+import ch.mikeko.adventofcode2022.common.Coordinate;
+
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Sensor {
     private final Coordinate sensorLocation;
@@ -13,6 +14,7 @@ public class Sensor {
         closestBeacon = new Coordinate(closestBeaconX, closestBeaconY);
     }
 
+    @SuppressWarnings("unused")
     public Coordinate getSensorLocation() {
         return sensorLocation;
     }
@@ -51,13 +53,6 @@ public class Sensor {
         return coordinates.stream()
                 .filter(x -> x.getX() >=0 && x.getX() <= 4_000_000 && x.getY() >= 0 && x.getY() <= 4_000_000)
                 .collect(Collectors.toSet());
-    }
-
-    private void addCoordinateIfNotInManhattanSquare(Set<Coordinate> coordinates, long x, long y) {
-        var coord = new Coordinate(x, y);
-        if (!isCoordinateInManhattanSquare(coord)) {
-            coordinates.add(coord);
-        }
     }
 
     public boolean isCoordinateInManhattanSquare(Coordinate coordinate) {
