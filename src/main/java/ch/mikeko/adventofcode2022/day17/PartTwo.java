@@ -74,19 +74,22 @@ public class PartTwo {
                     var minX = (int)shape.stream().mapToLong(Coordinate::getX).min().orElseThrow();
                     if (streamPosition == 0) {
                         var shapesForCycleCheck = cycleChecks.stream().filter(x -> x.getShapeIndex() == shapeIndex).collect(Collectors.toList());
-                        var potentialMatch = shapesForCycleCheck.stream().filter(x -> x.getX() == minX).findFirst();
+                        var potentialMatch = shapesForCycleCheck.stream().filter(x -> x.getX() == minX &&
+                                !x.getPreviousTenRows().contains("INVALID") &&
+                                x.getPreviousTenRows().equals(CycleCheck.buildPreviousTenRows(chamber, (int)chamber.getTopOfChamber())))
+                                .findFirst();
                         if (potentialMatch.isPresent()) {
                             System.out.println("Found potential cycle: ");
                             System.out.printf("Y1: %s; Shapes Dropped: %s%n", potentialMatch.get().getHeight(), potentialMatch.get().getShapesDropped());
                             System.out.printf("Y2: %s; Shapes Dropped: %s%n", chamber.getTopOfChamber(), i);
 
                             System.out.printf("Height for 1 trillion?: %s%n",
-                                    (potentialMatch.get().getHeight() - 1) +
-                                            ((1_000_000_000_000L / (i - potentialMatch.get().getShapesDropped())) * (chamber.getTopOfChamber() - potentialMatch.get().getHeight()))
-                                    + (1_000_000_000_000L % (i - potentialMatch.get().getShapesDropped())));
-                            System.exit(0);
+                                    (potentialMatch.get().getHeight()) +
+                                            ((1_000_000_000_000L / (long)(i - potentialMatch.get().getShapesDropped())) * (chamber.getTopOfChamber() - potentialMatch.get().getHeight()))
+                                    + (1_000_000_000_000L % (long)(i - potentialMatch.get().getShapesDropped())));
+                            //System.exit(0);
                         }
-                        cycleChecks.add(new CycleCheck(i, shapeIndex, minX, (int) chamber.getTopOfChamber()));
+                        cycleChecks.add(new CycleCheck(i, shapeIndex, minX, (int) chamber.getTopOfChamber(), chamber));
                     }
                     var jetStreamDelta = jetStream.charAt(streamPosition) == '>' ? 1 : -1;
                     shape.forEach(coordinate -> coordinate.setX(coordinate.getX() + jetStreamDelta));
