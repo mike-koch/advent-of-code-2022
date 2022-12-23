@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Program {
+public class PartTwo {
     private static final List<Coordinate> SHAPE_ONE = List.of(
             new Coordinate(0, 0),
             new Coordinate(1, 0),
@@ -51,13 +51,16 @@ public class Program {
         ALL_SHAPES.put(4, SHAPE_FOUR);
         ALL_SHAPES.put(5, SHAPE_FIVE);
 
-        try (Stream<String> lines = InputParser.getInputByLine(17, InputType.PUZZLE_INPUT)) {
+        try (Stream<String> lines = InputParser.getInputByLine(17, InputType.EXAMPLE)) {
             var jetStreamIndex = 0;
             var jetStream = lines.collect(Collectors.toList()).get(0);
             var chamber = new Chamber();
 
-            for (var i = 0; i < 2022; i++) {
-                var shape = cloneShape(ALL_SHAPES.get(i % 5 + 1));
+            List<CycleCheck> cycleChecks = new ArrayList<>();
+
+            for (var i = 0; i < 10_000; i++) {
+                var shapeIndex = i % 5 + 1;
+                var shape = cloneShape(ALL_SHAPES.get(shapeIndex));
                 var startingX = 2;
                 var startingY = chamber.getTopOfChamber() + 3L;
                 shape.forEach(coordinate -> {
@@ -67,7 +70,25 @@ public class Program {
 
                 var rockCanMoveDownwards = true;
                 while (rockCanMoveDownwards) {
-                    var jetStreamDelta = jetStream.charAt(jetStreamIndex++ % jetStream.length()) == '>' ? 1 : -1;
+                    var streamPosition = jetStreamIndex++ % jetStream.length();
+                    var minX = (int)shape.stream().mapToLong(Coordinate::getX).min().orElseThrow();
+                    if (streamPosition == 0) {
+                        var shapesForCycleCheck = cycleChecks.stream().filter(x -> x.getShapeIndex() == shapeIndex).collect(Collectors.toList());
+                        var potentialMatch = shapesForCycleCheck.stream().filter(x -> x.getX() == minX).findFirst();
+                        if (potentialMatch.isPresent()) {
+                            System.out.println("Found potential cycle: ");
+                            System.out.printf("Y1: %s; Shapes Dropped: %s%n", potentialMatch.get().getHeight(), potentialMatch.get().getShapesDropped());
+                            System.out.printf("Y2: %s; Shapes Dropped: %s%n", chamber.getTopOfChamber(), i);
+
+                            System.out.printf("Height for 1 trillion?: %s%n",
+                                    (potentialMatch.get().getHeight() - 1) +
+                                            ((1_000_000_000_000L / (i - potentialMatch.get().getShapesDropped())) * (chamber.getTopOfChamber() - potentialMatch.get().getHeight()))
+                                    + (1_000_000_000_000L % (i - potentialMatch.get().getShapesDropped())));
+                            System.exit(0);
+                        }
+                        cycleChecks.add(new CycleCheck(i, shapeIndex, minX, (int) chamber.getTopOfChamber()));
+                    }
+                    var jetStreamDelta = jetStream.charAt(streamPosition) == '>' ? 1 : -1;
                     shape.forEach(coordinate -> coordinate.setX(coordinate.getX() + jetStreamDelta));
 
                     if (shape.stream().anyMatch(x -> x.getX() >= CHAMBER_WIDTH || x.getX() < 0) ||
@@ -93,7 +114,7 @@ public class Program {
                 chamber.getBlockedSpaces().addAll(shape);
             }
 
-            System.out.printf("Part one result: %s%n", chamber.getTopOfChamber());
+            System.err.println("If we got here, then no pattern was found o.O");
         }
     }
 

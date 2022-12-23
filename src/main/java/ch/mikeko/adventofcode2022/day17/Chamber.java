@@ -3,7 +3,9 @@ package ch.mikeko.adventofcode2022.day17;
 import ch.mikeko.adventofcode2022.common.Coordinate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Chamber {
     public static final int WIDTH = 7;
